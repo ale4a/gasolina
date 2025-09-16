@@ -11,7 +11,12 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier . --write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "backend:install": "cd backend && npm install",
+    "backend:dev": "cd backend && npm run dev",
+    "backend:start": "cd backend && npm start",
+    "dev:full": "concurrently \"npm run backend:dev\" \"npm run dev\"",
+    "start:full": "concurrently \"npm run backend:start\" \"npm run start\""
   },
   "workspaces": [
     "packages/*"
