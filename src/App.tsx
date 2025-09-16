@@ -2,7 +2,6 @@ import { Layout } from "@stellar/design-system";
 import styles from "./App.module.css";
 import { Routes, Route, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Home from "./pages/Home";
 import GasolinaPage from "./pages/GasolinaPage";
 import { FloatingNavbar } from "./components/FloatingNavbar";
 
@@ -61,8 +60,8 @@ export default function App() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route index element={<Home />} />
-        <Route path="with-gasolina" element={<GasolinaPage />} />
+        <Route index element={<GasolinaPage />} />
+        {/* <Route path="with-gasolina" element={<GasolinaPage />} /> */}
       </Route>
     </Routes>
   );
