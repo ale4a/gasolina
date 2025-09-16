@@ -1,56 +1,59 @@
-import { Button, Icon, Layout } from "@stellar/design-system";
+import { Layout } from "@stellar/design-system";
 import "./App.module.css";
-import ConnectAccount from "./components/ConnectAccount.tsx";
-import { Routes, Route, Outlet, NavLink } from "react-router-dom";
+import { Routes, Route, Outlet, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Home from "./pages/Home";
-import Debugger from "./pages/Debugger.tsx";
 import GasolinaPage from "./pages/GasolinaPage";
+import { FloatingNavbar } from "./components/FloatingNavbar";
 
-const AppLayout: React.FC = () => (
-  <main>
-    <Layout.Header
-      projectId="My App"
-      projectTitle="My App"
-      contentRight={
-        <>
-          <nav>
-            <NavLink to="/with-gasolina" style={{ textDecoration: "none" }} end>
-              {({ isActive }) => (
-                <Button variant="tertiary" size="md" disabled={isActive}>
-                  <Icon.Car01 size="md" />
-                  Gasolina 3D
-                </Button>
-              )}
-            </NavLink>
-            <NavLink to="/debug" style={{ textDecoration: "none" }} end>
-              {({ isActive }) => (
-                <Button variant="tertiary" size="md" disabled={isActive}>
-                  <Icon.Code02 size="md" />
-                  Debugger
-                </Button>
-              )}
-            </NavLink>
-          </nav>
-          <ConnectAccount />
-        </>
-      }
-    />
-    <Outlet />
-    <Layout.Footer>
-      <span>
-        © {new Date().getFullYear()} My App. Licensed under la{" "}
-        <a
-          href="http://www.apache.org/licenses/LICENSE-2.0"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Apache License, Version 2.0
-        </a>
-        .
-      </span>
-    </Layout.Footer>
-  </main>
-);
+const AppLayout: React.FC = () => {
+  const location = useLocation();
+  const [currentMode, setCurrentMode] = useState<'with-gasolina' | 'without-gasolina'>('without-gasolina');
+
+  // Sincronizar el estado con la ruta actual
+  useEffect(() => {
+    if (location.pathname === '/with-gasolina') {
+      setCurrentMode('with-gasolina');
+    } else {
+      setCurrentMode('without-gasolina');
+    }
+  }, [location.pathname]);
+
+  const handleModeChange = (mode: 'with-gasolina' | 'without-gasolina') => {
+    setCurrentMode(mode);
+    // Aquí puedes agregar lógica para cambiar el modelo o efectos
+    console.log('Mode changed to:', mode);
+  };
+
+  return (
+    <main>
+      <Layout.Header
+        projectId="Gasolina 3D"
+        projectTitle="Gasolina 3D"
+      />
+      <Outlet />
+      <Layout.Footer>
+        <span>
+          © {new Date().getFullYear()} Gasolina 3D. Licensed under la{" "}
+          <a
+            href="http://www.apache.org/licenses/LICENSE-2.0"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Apache License, Version 2.0
+          </a>
+          .
+        </span>
+      </Layout.Footer>
+      
+      {/* Navbar flotante que aparece en todas las páginas */}
+      <FloatingNavbar 
+        currentMode={currentMode} 
+        onModeChange={handleModeChange} 
+      />
+    </main>
+  );
+};
 
 export default function App() {
   return (
@@ -58,10 +61,6 @@ export default function App() {
       <Route element={<AppLayout />}>
         <Route index element={<Home />} />
         <Route path="with-gasolina" element={<GasolinaPage />} />
-        <Route path="debug">
-          <Route index element={<Debugger />} />
-          <Route path=":contractName" element={<Debugger />} />
-        </Route>
       </Route>
     </Routes>
   );
