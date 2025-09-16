@@ -1,7 +1,12 @@
 import React from "react";
 import { Code, Layout } from "@stellar/design-system";
+import { GasolinaMain } from "../util/gas";
 
-const Home: React.FC = () => (
+const Home: React.FC = () => {
+  GasolinaMain();
+  
+  return (
+
   <Layout.Content>
     <Layout.Inset>
       <h1>Welcome to your app!</h1>
@@ -58,6 +63,6 @@ const Home: React.FC = () => (
       </p>
     </Layout.Inset>
   </Layout.Content>
-);
-
+)
+}
 export default Home;
