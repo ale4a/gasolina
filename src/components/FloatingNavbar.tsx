@@ -1,14 +1,17 @@
-import { Button, Icon } from '@stellar/design-system';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import ConnectAccount from './ConnectAccount';
+import { Button, Icon, Layout } from "@stellar/design-system";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import ConnectAccount from "./ConnectAccount";
 
 interface FloatingNavbarProps {
-  currentMode: 'with-gasolina' | 'without-gasolina';
-  onModeChange: (mode: 'with-gasolina' | 'without-gasolina') => void;
+  currentMode: "with-gasolina" | "without-gasolina";
+  onModeChange: (mode: "with-gasolina" | "without-gasolina") => void;
 }
 
-export function FloatingNavbar({ currentMode, onModeChange }: FloatingNavbarProps) {
+export function FloatingNavbar({
+  currentMode,
+  onModeChange,
+}: FloatingNavbarProps) {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -16,138 +19,132 @@ export function FloatingNavbar({ currentMode, onModeChange }: FloatingNavbarProp
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleWithGasolina = () => {
-    onModeChange('with-gasolina');
-    navigate('/with-gasolina');
+    onModeChange("with-gasolina");
+    navigate("/with-gasolina");
   };
 
   const handleWithoutGasolina = () => {
-    onModeChange('without-gasolina');
-    navigate('/');
+    onModeChange("without-gasolina");
+    navigate("/");
   };
 
   return (
-    <div style={{
-      position: 'absolute',
-      top: isMobile ? '15px' : '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      zIndex: 1000,
-      display: 'flex',
-      gap: isMobile ? '8px' : '16px',
-      padding: isMobile ? '12px 20px' : '16px 32px',
-      background: 'rgba(255, 255, 255, 0.95)',
-      backdropFilter: 'blur(20px)',
-      borderRadius: isMobile ? '40px' : '60px',
-      boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-      border: '1px solid rgba(255, 255, 255, 0.3)',
-      transition: 'all 0.3s ease',
-      alignItems: 'center',
-      minWidth: 'fit-content',
-      maxWidth: isMobile ? '95vw' : '90vw',
-      flexWrap: isMobile ? 'wrap' : 'nowrap'
-    }}>
+    <div
+      style={{
+        position: "fixed",
+        // top: isMobile ? '15px' : '20px',
+        // left: '50%',
+        // transform: 'translateX(-50%)',
+        zIndex: 1000,
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        // gap: isMobile ? '12px' : '24px',
+        // padding: isMobile ? '12px 24px' : '20px 48px',
+        background: "rgba(255, 255, 255, 0.95)",
+        backdropFilter: "blur(20px)",
+        // borderRadius: isMobile ? '40px' : '60px',
+        boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        transition: "all 0.3s ease",
+        // minWidth: isMobile ? '300px' : '600px',
+        // maxWidth: isMobile ? '95vw' : '80vw',
+        // flexWrap: isMobile ? 'wrap' : 'nowrap',
+        // width: isMobile ? '90vw' : '70vw'
+        width: "100vw",
+      }}
+    >
       {/* Logo de Stellar */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: isMobile ? '6px' : '8px',
-        marginRight: isMobile ? '4px' : '8px'
-      }}>
-        <div style={{
-          width: isMobile ? '28px' : '32px',
-          height: isMobile ? '28px' : '32px',
-          background: 'linear-gradient(135deg, #7B68EE, #00BFFF)',
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontWeight: 'bold',
-          fontSize: isMobile ? '12px' : '14px'
-        }}>
-          S
-        </div>
-        <span style={{
-          fontSize: isMobile ? '14px' : '16px',
-          fontWeight: '600',
-          color: '#333',
-          whiteSpace: 'nowrap',
-          display: isMobile ? 'none' : 'block'
-        }}>
-          Stellar
-        </span>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "start",
+          gap: "24px",
+          alignItems: "center",
+        }}
+      >
+        <Layout.Header projectId="" projectTitle="" />
+        <Button
+          variant={currentMode === "with-gasolina" ? "primary" : "tertiary"}
+          size={isMobile ? "md" : "lg"}
+          onClick={handleWithGasolina}
+          style={{
+            borderRadius: isMobile ? "20px" : "30px",
+            padding: isMobile ? "8px 16px" : "12px 24px",
+            fontWeight: "600",
+            transition: "all 0.3s ease",
+            background:
+              currentMode === "with-gasolina"
+                ? "linear-gradient(135deg, #ff9621, #ff6b35)"
+                : "transparent",
+            color: currentMode === "with-gasolina" ? "white" : "#666",
+            border:
+              currentMode === "with-gasolina"
+                ? "none"
+                : "1px solid rgba(0, 0, 0, 0.1)",
+            boxShadow:
+              currentMode === "with-gasolina"
+                ? "0 6px 20px rgba(255, 150, 33, 0.4)"
+                : "none",
+            fontSize: isMobile ? "12px" : "14px",
+            minWidth: isMobile ? "100px" : "140px",
+          }}
+        >
+          <Icon.Car01
+            size={isMobile ? "sm" : "md"}
+            style={{ marginRight: isMobile ? "6px" : "10px" }}
+          />
+          {isMobile ? "With" : "With Gasolina"}
+        </Button>
+
+        <Button
+          variant={currentMode === "without-gasolina" ? "primary" : "tertiary"}
+          size={isMobile ? "md" : "lg"}
+          onClick={handleWithoutGasolina}
+          style={{
+            borderRadius: isMobile ? "20px" : "30px",
+            padding: isMobile ? "8px 16px" : "12px 24px",
+            fontWeight: "600",
+            transition: "all 0.3s ease",
+            background:
+              currentMode === "without-gasolina"
+                ? "linear-gradient(135deg, #667eea, #764ba2)"
+                : "transparent",
+            color: currentMode === "without-gasolina" ? "white" : "#666",
+            border:
+              currentMode === "without-gasolina"
+                ? "none"
+                : "1px solid rgba(0, 0, 0, 0.1)",
+            boxShadow:
+              currentMode === "without-gasolina"
+                ? "0 6px 20px rgba(102, 126, 234, 0.4)"
+                : "none",
+            fontSize: isMobile ? "12px" : "14px",
+            minWidth: isMobile ? "100px" : "140px",
+          }}
+        >
+          <Icon.Car01
+            size={isMobile ? "sm" : "md"}
+            style={{ marginRight: isMobile ? "6px" : "10px" }}
+          />
+          {isMobile ? "Without" : "Without Gasolina"}
+        </Button>
       </div>
 
-      <Button
-        variant={currentMode === 'with-gasolina' ? 'primary' : 'tertiary'}
-        size={isMobile ? "md" : "lg"}
-        onClick={handleWithGasolina}
-        style={{
-          borderRadius: isMobile ? '20px' : '30px',
-          padding: isMobile ? '8px 16px' : '12px 24px',
-          fontWeight: '600',
-          transition: 'all 0.3s ease',
-          background: currentMode === 'with-gasolina' 
-            ? 'linear-gradient(135deg, #ff9621, #ff6b35)' 
-            : 'transparent',
-          color: currentMode === 'with-gasolina' ? 'white' : '#666',
-          border: currentMode === 'with-gasolina' ? 'none' : '1px solid rgba(0, 0, 0, 0.1)',
-          boxShadow: currentMode === 'with-gasolina' 
-            ? '0 6px 20px rgba(255, 150, 33, 0.4)' 
-            : 'none',
-          fontSize: isMobile ? '12px' : '14px',
-          minWidth: isMobile ? '100px' : '140px'
-        }}
-      >
-        <Icon.Car01 size={isMobile ? "sm" : "md"} style={{ marginRight: isMobile ? '6px' : '10px' }} />
-        {isMobile ? 'With' : 'With Gasolina'}
-      </Button>
-      
-      <Button
-        variant={currentMode === 'without-gasolina' ? 'primary' : 'tertiary'}
-        size={isMobile ? "md" : "lg"}
-        onClick={handleWithoutGasolina}
-        style={{
-          borderRadius: isMobile ? '20px' : '30px',
-          padding: isMobile ? '8px 16px' : '12px 24px',
-          fontWeight: '600',
-          transition: 'all 0.3s ease',
-          background: currentMode === 'without-gasolina' 
-            ? 'linear-gradient(135deg, #667eea, #764ba2)' 
-            : 'transparent',
-          color: currentMode === 'without-gasolina' ? 'white' : '#666',
-          border: currentMode === 'without-gasolina' ? 'none' : '1px solid rgba(0, 0, 0, 0.1)',
-          boxShadow: currentMode === 'without-gasolina' 
-            ? '0 6px 20px rgba(102, 126, 234, 0.4)' 
-            : 'none',
-          fontSize: isMobile ? '12px' : '14px',
-          minWidth: isMobile ? '100px' : '140px'
-        }}
-      >
-        <Icon.Car01 size={isMobile ? "sm" : "md"} style={{ marginRight: isMobile ? '6px' : '10px' }} />
-        {isMobile ? 'Without' : 'Without Gasolina'}
-      </Button>
-
-      {/* Separador visual */}
-      <div style={{
-        width: '1px',
-        height: '40px',
-        background: 'rgba(0, 0, 0, 0.1)',
-        margin: '0 12px'
-      }} />
-
       {/* Connect Account */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center'
-      }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "end",
+        }}
+      >
         <ConnectAccount />
       </div>
     </div>
