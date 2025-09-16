@@ -300,6 +300,76 @@ const Home: React.FC = () => {
         <Scene3D className="fullscreen-scene" shouldZoom={shouldZoom} />
       </div>
 
+      {/* Loading Overlay */}
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            backdropFilter: "blur(10px)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "auto",
+          }}
+        >
+          <div
+            style={{
+              background: "rgba(255, 255, 255, 0.1)",
+              backdropFilter: "blur(20px)",
+              borderRadius: "24px",
+              padding: "48px",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "24px",
+              minWidth: "300px",
+            }}
+          >
+            <div
+              style={{
+                width: "60px",
+                height: "60px",
+                border: "4px solid rgba(255, 255, 255, 0.3)",
+                borderTop: "4px solid #8B5CF6",
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+              }}
+            />
+            <div style={{ textAlign: "center" }}>
+              <h3
+                style={{
+                  color: "white",
+                  fontSize: "24px",
+                  fontWeight: "700",
+                  margin: "0 0 8px 0",
+                  textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                Processing Transaction
+              </h3>
+              <p
+                style={{
+                  color: "rgba(255, 255, 255, 0.8)",
+                  fontSize: "16px",
+                  margin: 0,
+                  fontWeight: "500",
+                }}
+              >
+                Please wait while we process your payment...
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Botón de zoom centrado */}
       {address && (
         <div
@@ -324,7 +394,7 @@ const Home: React.FC = () => {
               fontWeight: "600",
               color: "white",
               border: "2px solid rgba(255, 255, 255, 0.3)",
-              cursor: "pointer",
+              cursor: loading ? "not-allowed" : "pointer",
               transition: "all 0.3s ease",
               background: loading
                 ? "#6c757d"
@@ -340,39 +410,24 @@ const Home: React.FC = () => {
               userSelect: "none",
               outline: "none",
               textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+              opacity: loading ? 0.6 : 1,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow =
-                "0 12px 40px rgba(139, 92, 246, 0.8)";
+              if (!loading) {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow =
+                  "0 12px 40px rgba(139, 92, 246, 0.8)";
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow =
-                "0 8px 32px rgba(139, 92, 246, 0.6)";
+              if (!loading) {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 32px rgba(139, 92, 246, 0.6)";
+              }
             }}
           >
-            {loading ? (
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
-                <div
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    border: "2px solid rgba(255, 255, 255, 0.3)",
-                    borderTop: "2px solid white",
-                    borderRadius: "50%",
-                    animation: "spin 1s linear infinite",
-                  }}
-                />
-                <span>Processing...</span>
-              </div>
-            ) : shouldZoom ? (
-              "Done"
-            ) : (
-              "Pay without XLM - Dale Gas!"
-            )}
+            {shouldZoom ? "Done" : "Pay without XLM - Dale Gas!"}
           </button>
         </div>
       )}
