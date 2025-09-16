@@ -1,7 +1,8 @@
 # Stellar Gasless SDK 🚀  
 
 A lightweight SDK that enables **gasless transactions on Stellar**, letting users pay fees directly in **stablecoins** instead of XLM.  
-This SDK standardizes gasless payments across applications, removing friction and delivering a **fintech-like user experience**.  
+Unlike other solutions that sponsor network fees, this SDK automatically swaps a small portion of the user’s stablecoin into XLM to cover the fee.
+Gasolina SDK standardizes gasless payments across applications, removing friction and delivering a **fintech-like user experience**.  
 
 ---
 
