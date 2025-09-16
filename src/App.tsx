@@ -13,19 +13,9 @@ const AppLayout: React.FC = () => (
       contentRight={
         <>
           <nav>
-            <NavLink
-              to="/debug"
-              style={{
-                textDecoration: "none",
-              }}
-            >
+            <NavLink to="/debug" style={{ textDecoration: "none" }} end>
               {({ isActive }) => (
-                <Button
-                  variant="tertiary"
-                  size="md"
-                  onClick={() => (window.location.href = "/debug")}
-                  disabled={isActive}
-                >
+                <Button variant="tertiary" size="md" disabled={isActive}>
                   <Icon.Code02 size="md" />
                   Debugger
                 </Button>
@@ -39,7 +29,7 @@ const AppLayout: React.FC = () => (
     <Outlet />
     <Layout.Footer>
       <span>
-        © {new Date().getFullYear()} My App. Licensed under the{" "}
+        © {new Date().getFullYear()} My App. Licensed under la{" "}
         <a
           href="http://www.apache.org/licenses/LICENSE-2.0"
           target="_blank"
@@ -53,16 +43,16 @@ const AppLayout: React.FC = () => (
   </main>
 );
 
-function App() {
+export default function App() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/debug" element={<Debugger />} />
-        <Route path="/debug/:contractName" element={<Debugger />} />
+        <Route index element={<Home />} />
+        <Route path="debug">
+          <Route index element={<Debugger />} />
+          <Route path=":contractName" element={<Debugger />} />
+        </Route>
       </Route>
     </Routes>
   );
 }
-
-export default App;
