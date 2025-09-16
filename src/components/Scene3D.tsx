@@ -26,13 +26,16 @@ function CameraController({ shouldZoom }: { shouldZoom: boolean }) {
   const currentPosition = useRef({ x: 4, y: 0, z: 6 });
 
   useEffect(() => {
+    console.log("CameraController: shouldZoom cambió a:", shouldZoom);
     setIsAnimating(true);
     if (shouldZoom) {
       // Posición más cercana al auto
       setTargetPosition({ x: 1, y: 0.5, z: 2 });
+      console.log("Objetivo: acercar a [1, 0.5, 2]");
     } else {
       // Volver a la posición original
       setTargetPosition({ x: 4, y: 0, z: 6 });
+      console.log("Objetivo: alejar a [4, 0, 6]");
     }
   }, [shouldZoom]);
 
