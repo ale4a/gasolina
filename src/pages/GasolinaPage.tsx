@@ -75,7 +75,7 @@ const GasolinaPage: React.FC = () => {
               "0 8px 32px rgba(139, 92, 246, 0.6)";
           }}
         >
-          {shouldZoom ? "Alejar" : "Acercar"}
+          {shouldZoom ? "Pagar sin XLM - Dale Gas" : "Reiniciar"}
         </button>
       </div>
     </>

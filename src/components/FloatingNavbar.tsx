@@ -32,7 +32,7 @@ export function FloatingNavbar({
       style={{
         position: "fixed",
         backgroundColor: "transparent",
-        zIndex: 1000,
+        zIndex: 2,
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
