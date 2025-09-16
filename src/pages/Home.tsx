@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 
 // import { GasolinaMain } from "../util/gas";
 import React, { use } from "react";
@@ -7,7 +8,6 @@ import { RelayExample } from "../components/RelayExample";
 import { WalletContext } from "../providers/WalletProvider";
 import {
   Account,
-  Asset,
   BASE_FEE,
   Horizon,
   Operation,
@@ -17,6 +17,7 @@ import {
   nativeToScVal,
 } from "@stellar/stellar-sdk";
 import { networkPassphrase, horizonUrl } from "../contracts/util";
+import { submitToRelay } from "../util/relay";
 
 const ROUTER_CONTRACT_ID =
   "CCNXMLQRLAAZ5MGK5HXMWFDZEU6SE67Y5CHI3QTKXIGY46PUU5NJJZS5"; // C...
@@ -131,7 +132,7 @@ const Home: React.FC = () => {
       // Get account information from Horizon (more reliable for account data)
       console.log("Fetching account information...");
       const accountRecord = await horizonServer.loadAccount(address); // Changed from accounts().accountId()
-      const baseFee = await horizonServer.fetchBaseFee();
+      // const baseFee = await horizonServer.fetchBaseFee();
 
       // Create Account object - accountRecord is already an Account-like object
       const account = new Account(
@@ -146,50 +147,58 @@ const Home: React.FC = () => {
       );
 
       // Create transaction
-      const transaction = new TransactionBuilder(account, {
-        fee: baseFee.toString(),
-        networkPassphrase: networkPassphrase,
-      })
-        .addOperation(
-          Operation.payment({
-            destination:
-              "GCVROJRT5EA7OGQ75JKD67GPVCLR4DJXPCWVEQR5B22KWZCMR63ZJ4KL",
-            asset: Asset.native(),
-            amount: "1",
-          }),
-        )
-        .setTimeout(30)
-        .build();
+      // const transaction = new TransactionBuilder(account, {
+      //   fee: baseFee.toString(),
+      //   networkPassphrase: networkPassphrase,
+      // })
+      //   .addOperation(
+      //     Operation.payment({
+      //       destination:
+      //         "GCVROJRT5EA7OGQ75JKD67GPVCLR4DJXPCWVEQR5B22KWZCMR63ZJ4KL",
+      //       asset: Asset.native(),
+      //       amount: "1",
+      //     }),
+      //   )
+      //   .setTimeout(30)
+      //   .build();
 
       // Convert to XDR for signing
-      const transactionXdr = transaction.toXDR();
-      console.log("transactionXdr", transactionXdr);
+      // const transactionXdr = transaction.toXDR();
+      // console.log("transactionXdr", transactionXdr);
 
       // Sign the transaction with the wallet
-      const result = await signTransaction(transactionXdr, {
-        networkPassphrase: networkPassphrase,
-        address: address,
-      });
-      console.log("result", result);
+      // const result = await signTransaction(transactionXdr, {
+      //   networkPassphrase: networkPassphrase,
+      //   address: address,
+      // });
+      // console.log("result", result);
 
       // Log the signed XDR to console
-      const signedXdr = result.signedTxXdr;
-      console.log("signedXdr", signedXdr);
-      console.log("✅ Transaction created and signed successfully!");
-      console.log("📝 Transaction XDR:", transactionXdr);
-      console.log("📝 Signed XDR:", signedXdr);
-      console.log("🔍 Signing result:", result);
-      console.log("🔍 Transaction details:", {
-        source: transaction.source,
-        destination: relayerAddress,
-        amount: "1 XLM",
-        fee: transaction.fee,
-        operations: transaction.operations.length,
-        timeBounds: transaction.timeBounds,
-        networkPassphrase: networkPassphrase,
-      });
+      // const signedXdr = result.signedTxXdr;
+      // console.log("signedXdr", signedXdr);
+      // console.log("✅ Transaction created and signed successfully!");
+      // console.log("📝 Transaction XDR:", transactionXdr);
+      // console.log("📝 Signed XDR:", signedXdr);
+      // console.log("🔍 Signing result:", result);
+      // console.log("🔍 Transaction details:", {
+      //   source: transaction.source,
+      //   destination: relayerAddress,
+      //   amount: "1 XLM",
+      //   fee: transaction.fee,
+      //   operations: transaction.operations.length,
+      //   timeBounds: transaction.timeBounds,
+      //   networkPassphrase: networkPassphrase,
+      // });
 
       // Update the input with the signed XDR
+
+      console.log("address", address);
+      console.log("relayerAddress", relayerAddress);
+      console.log("AMOUNT", AMOUNT);
+      console.log("estimateGas", estimateGas());
+      console.log("amountInMaxUsdc", amountInMaxUsdc());
+      console.log("DEADLINE_FOREVER", DEADLINE_FOREVER);
+      console.log("ROUTER_CONTRACT_ID", ROUTER_CONTRACT_ID);
 
       const invocationsVec = scVec([
         buildInvocation_UsdcTransfer(address, relayerAddress, AMOUNT),
@@ -213,6 +222,33 @@ const Home: React.FC = () => {
       });
 
       console.log("opWithoutAuth", opWithoutAuth);
+
+      const transaction = new TransactionBuilder(account, {
+        fee: BASE_FEE.toString(),
+        networkPassphrase: networkPassphrase,
+      })
+        .addOperation(opWithoutAuth)
+        .setTimeout(30)
+        .build();
+
+      const transactionXdr = transaction.toXDR();
+      console.log("transactionXdr", transactionXdr);
+
+      const result = await signTransaction(transactionXdr, {
+        networkPassphrase: networkPassphrase,
+        address: address,
+      });
+      console.log("result", result);
+
+      const signedXdr = result.signedTxXdr;
+      console.log("signedXdr", signedXdr);
+
+      console.log("✅ Transaction created and signed successfully!");
+      console.log("📝 Transaction XDR:", transactionXdr);
+      console.log("📝 Signed XDR:", signedXdr);
+      console.log("🔍 Signing result:", result);
+
+      submitToRelay(signedXdr);
     } catch (err) {
       console.error("❌ Failed to create or sign transaction:", err);
       alert(
