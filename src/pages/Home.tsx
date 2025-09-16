@@ -122,7 +122,10 @@ const Home: React.FC = () => {
   // const recipientG= recipientKeypair.publicKey();
   // GasolinaMain();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSignTransaction = async () => {
+    setLoading(true);
     if (!address) {
       alert("Please connect your wallet first");
       return;
@@ -264,6 +267,8 @@ const Home: React.FC = () => {
       );
     } finally {
       // setIsSigning(false);
+      setLoading(false);
+      setShouldZoom(false);
     }
   };
 
@@ -273,6 +278,12 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
       <div
         style={{
           width: "100vw",
@@ -290,56 +301,81 @@ const Home: React.FC = () => {
       </div>
 
       {/* Botón de zoom centrado */}
-      <div
-        style={{
-          position: "fixed",
-          top: "90%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 2,
-          pointerEvents: "auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <button
-          onClick={handleZoomClick}
+      {address && (
+        <div
           style={{
-            padding: "16px 32px",
-            borderRadius: "16px",
-            fontWeight: "600",
-            color: "white",
-            border: "2px solid rgba(255, 255, 255, 0.3)",
-            cursor: "pointer",
-            transition: "all 0.3s ease",
-            background: "linear-gradient(135deg, #8B5CF6, #7C3AED)",
-            boxShadow: "0 8px 32px rgba(139, 92, 246, 0.6)",
-            backdropFilter: "blur(10px)",
-            fontSize: "18px",
-            minWidth: "220px",
-            minHeight: "70px",
+            position: "fixed",
+            top: "90%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 2,
+            pointerEvents: "auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            userSelect: "none",
-            outline: "none",
-            textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.05)";
-            e.currentTarget.style.boxShadow =
-              "0 12px 40px rgba(139, 92, 246, 0.8)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-            e.currentTarget.style.boxShadow =
-              "0 8px 32px rgba(139, 92, 246, 0.6)";
           }}
         >
-          {shouldZoom ? "Done" : "Pagar sin XLM - Dale Gas"}
-        </button>
-      </div>
+          <button
+            onClick={handleZoomClick}
+            disabled={loading}
+            style={{
+              padding: "16px 32px",
+              borderRadius: "16px",
+              fontWeight: "600",
+              color: "white",
+              border: "2px solid rgba(255, 255, 255, 0.3)",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              background: loading
+                ? "#6c757d"
+                : "linear-gradient(135deg, #8B5CF6, #7C3AED)",
+              boxShadow: "0 8px 32px rgba(139, 92, 246, 0.6)",
+              backdropFilter: "blur(10px)",
+              fontSize: "18px",
+              minWidth: "220px",
+              minHeight: "70px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              userSelect: "none",
+              outline: "none",
+              textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow =
+                "0 12px 40px rgba(139, 92, 246, 0.8)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow =
+                "0 8px 32px rgba(139, 92, 246, 0.6)";
+            }}
+          >
+            {loading ? (
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
+                <div
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    border: "2px solid rgba(255, 255, 255, 0.3)",
+                    borderTop: "2px solid white",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite",
+                  }}
+                />
+                <span>Processing...</span>
+              </div>
+            ) : shouldZoom ? (
+              "Done"
+            ) : (
+              "Pay without XLM - Dale Gas!"
+            )}
+          </button>
+        </div>
+      )}
     </>
   );
 };
