@@ -38,7 +38,19 @@ This SDK standardizes gasless payments across applications, removing friction an
 
 4. **Execution**  
    - Transaction is submitted and confirmed on Stellar.  
-   - User sees a **pure stablecoin payment experience**.  
+   - User sees a **pure stablecoin payment experience**.
+
+---
+  
+🤝 Contributing
+
+Contributions are welcome! Please open issues or submit PRs to help improve the SDK.
+
+---
+
+📜 License
+
+MIT License.
 
 ---
 
