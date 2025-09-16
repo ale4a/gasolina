@@ -1,5 +1,6 @@
 import React from "react";
 import { Code, Layout } from "@stellar/design-system";
+import { RelayExample } from "../components/RelayExample";
 
 const Home: React.FC = () => (
   <Layout.Content>
@@ -56,6 +57,12 @@ const Home: React.FC = () => (
         <Code size="md">npm run build</Code> and deploying the output in the
         <Code size="md">dist/</Code> directory.
       </p>
+      <h2>Relay Example</h2>
+      <p>
+        Try the relay example below to create and sign a transaction that sends
+        1 XLM to a specific address.
+      </p>
+      <RelayExample />
     </Layout.Inset>
   </Layout.Content>
 );

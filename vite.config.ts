@@ -32,6 +32,14 @@ export default defineConfig(() => {
           target: "http://localhost:8000/friendbot",
           changeOrigin: true,
         },
+        "/relay": {
+          target: "http://localhost:3001/relay",
+          changeOrigin: true,
+        },
+        "/health": {
+          target: "http://localhost:3001/health",
+          changeOrigin: true,
+        },
       },
     },
   };
