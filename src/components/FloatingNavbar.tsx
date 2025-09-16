@@ -39,25 +39,14 @@ export function FloatingNavbar({
     <div
       style={{
         position: "fixed",
-        // top: isMobile ? '15px' : '20px',
-        // left: '50%',
-        // transform: 'translateX(-50%)',
+        backgroundColor: "transparent",
         zIndex: 1000,
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
-        // gap: isMobile ? '12px' : '24px',
-        // padding: isMobile ? '12px 24px' : '20px 48px',
-        background: "rgba(255, 255, 255, 0.95)",
         backdropFilter: "blur(20px)",
-        // borderRadius: isMobile ? '40px' : '60px',
         boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
-        border: "1px solid rgba(255, 255, 255, 0.3)",
         transition: "all 0.3s ease",
-        // minWidth: isMobile ? '300px' : '600px',
-        // maxWidth: isMobile ? '95vw' : '80vw',
-        // flexWrap: isMobile ? 'wrap' : 'nowrap',
-        // width: isMobile ? '90vw' : '70vw'
         width: "100vw",
       }}
     >
