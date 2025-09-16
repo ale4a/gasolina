@@ -4,6 +4,7 @@ import ConnectAccount from "./components/ConnectAccount.tsx";
 import { Routes, Route, Outlet, NavLink } from "react-router-dom";
 import Home from "./pages/Home";
 import Debugger from "./pages/Debugger.tsx";
+import GasolinaPage from "./pages/GasolinaPage";
 
 const AppLayout: React.FC = () => (
   <main>
@@ -13,6 +14,14 @@ const AppLayout: React.FC = () => (
       contentRight={
         <>
           <nav>
+            <NavLink to="/with-gasolina" style={{ textDecoration: "none" }} end>
+              {({ isActive }) => (
+                <Button variant="tertiary" size="md" disabled={isActive}>
+                  <Icon.Car01 size="md" />
+                  Gasolina 3D
+                </Button>
+              )}
+            </NavLink>
             <NavLink to="/debug" style={{ textDecoration: "none" }} end>
               {({ isActive }) => (
                 <Button variant="tertiary" size="md" disabled={isActive}>
@@ -48,6 +57,7 @@ export default function App() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<Home />} />
+        <Route path="with-gasolina" element={<GasolinaPage />} />
         <Route path="debug">
           <Route index element={<Debugger />} />
           <Route path=":contractName" element={<Debugger />} />
